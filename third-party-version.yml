@@ -1,0 +1,80 @@
+---
+- name: "play2 postgresql"
+  hosts: postgres
+  tasks:
+     - name: Execute command 'hostname command'
+       shell: echo $(hostname)
+       register: hostname_var
+
+     - name: "Display hostname"                                                                       | union(additional_pkg) | json_query(query) | union(stand_add_pkg)
+       debug:
+        msg: " Hostname is: {{ hostname_var['stdout_lines'][0] }} "     
+  
+     - name: Execute command 'ip a command'
+       shell: echo $(ip a | awk '{print $2}' |  sed '9q;d')
+       register: ip_var
+
+     - name: "Display ip address "
+       debug:
+        msg: " Ip address is: {{ ip_var['stdout_lines'][0][:-3] }} " 
+
+     - name: Ensure that postgresql is started
+       ansible.builtin.service:
+         name: postgresql-10
+         state: started 
+
+     - name: Execute command 'version'
+       shell: echo $(/usr/pgsql-10/bin/postgres -V | awk '{print $3}')
+       register: psql_var
+
+     - name: "Display psql version "
+       debug:
+        msg: " postgres version is: {{ psql_var['stdout']}} " 
+
+# - name: "play3 nginx"
+#   hosts: nginx
+#   tasks:
+#      - name: Execute command 'hostname command'
+#        shell: echo $(hostname)
+#        register: hostname_var
+
+#      - name: "Display hostname"
+#        debug:
+#         msg: " Hostname is: {{ hostname_var['stdout_lines'][0] }} "     
+  
+#      - name: Execute command 'ip a command'
+#        shell: echo $(ip a | awk '{print $2}' |  sed '9q;d')
+#        register: ip_var
+
+#      - name: "Display ip address "
+#        debug:
+#         msg: " Ip address is: {{ ip_var['stdout_lines'][0][:-3] }} " 
+
+#      - name: Ensure that nginx is started
+#        ansible.builtin.service:
+#          name: nginx
+#          state: started 
+
+#      - name: Execute command 'nginx -v command'
+#        shell: echo $(nginx -v)
+#        register: nginx_var
+
+#      - name: "Display nginx version "
+#        debug:
+#         msg: " nginx version is: {{ nginx_var['stderr'][-6:] }} " 
+
+
+# - name: "play7 elasticsearch version"
+#   hosts: elasticsearch
+#   become: yes
+#   tasks:
+#      - name: Execute command 'elastic version'
+#        shell: echo $(curl http://$(hostname):9200/ | sed -n '/"number"/p' |  awk '{print $3}')
+#        register: elastic_var
+
+#      - name: "Display elastic version"
+#        debug:
+#         msg: " elasticsearch version is: {{ elastic_var['stdout'][1:-2] }} "  
+
+
+
