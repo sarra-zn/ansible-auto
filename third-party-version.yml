@@ -31,12 +31,12 @@
        debug:
         msg: " postgres version is: {{ psql_var['stdout']}} " 
 
-# - name: "play3 nginx"
-#   hosts: nginx
-#   tasks:
-#      - name: Execute command 'hostname command'
-#        shell: echo $(hostname)
-#        register: hostname_var
+ - name: "play3 nginx"
+   hosts: nginx
+   tasks:
+      - name: Execute command 'hostname command'
+        shell: echo $(hostname)
+        register: hostname_var
 
 #      - name: "Display hostname"
 #        debug:
